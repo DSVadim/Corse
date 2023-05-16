@@ -146,7 +146,7 @@ namespace My1 {
 			this->btOK->Name = L"btOK";
 			this->btOK->Size = System::Drawing::Size(94, 33);
 			this->btOK->TabIndex = 3;
-			this->btOK->Text = L"Óâ³éòè";
+			this->btOK->Text = L"OK";
 			this->btOK->UseVisualStyleBackColor = false;
 			this->btOK->Click += gcnew System::EventHandler(this, &LoginForm::btOK_Click);
 			// 

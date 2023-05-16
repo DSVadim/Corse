@@ -131,7 +131,7 @@ namespace  My1 {
 			this->configpassword->Name = L"configpassword";
 			this->configpassword->Size = System::Drawing::Size(240, 25);
 			this->configpassword->TabIndex = 2;
-			this->configpassword->Text = L"Підтвердження пароля";
+			this->configpassword->Text = L"Підтвердження пароль";
 			// 
 			// tbLogin
 			// 
@@ -217,45 +217,47 @@ namespace  My1 {
 		RegBoxLogin = System::Convert::ToString(tbLogin->Text);
 		RegBoxPassword = System::Convert::ToString(tbPassword->Text);
 		RegBoxConfigPassword = System::Convert::ToString(tbConfigPassword->Text);
+
 		if (RegBoxPassword != RegBoxConfigPassword) {
-			System::Windows::Forms::MessageBox::Show("Не правильний пароль.", "ERROR", System::Windows::Forms::MessageBoxButtons::OK, System::Windows::Forms::MessageBoxIcon::Error);
+			System::Windows::Forms::MessageBox::Show("Паролі не зівпали.", "Помилка", System::Windows::Forms::MessageBoxButtons::OK, System::Windows::Forms::MessageBoxIcon::Error);
 		}
 		else {
-		char* temp_path = getenv("TEMP");
-		char* folder_path = "\\Vadim\\Database";
-		char file_name[255];
+			char* temp_path = getenv("TEMP");
+			char* folder_path = "\\Vadim\\Database";
+			char file_name[255];
 
-		sprintf(file_name, "%s%s", temp_path, folder_path);
+			sprintf(file_name, "%s%s", temp_path, folder_path);
 
-		int result = mkdir(file_name);
+			int result = mkdir(file_name);
 
-		sprintf(file_name, "%s\\%s.bin", file_name, RegBoxLogin);
+			sprintf(file_name, "%s\\%s.bin", file_name, RegBoxLogin);
 
-		char Usernamechar[64];
-		sprintf(Usernamechar, "Login: %s", tbLogin->Text);
-		char Passwordchar[128];
-		sprintf(Passwordchar, "\nPassword: %s", tbPassword->Text);
+			char Usernamechar[64];
+			sprintf(Usernamechar, "Login: %s", tbLogin->Text);
+			char Passwordchar[128];
+			sprintf(Passwordchar, "\nPassword: %s", tbPassword->Text);
 
 
-		Registration registration;
-		strcpy(registration.login, Usernamechar);
-		strcpy(registration.password, Passwordchar);
+			Registration registration;
+			strcpy(registration.login, Usernamechar);
+			strcpy(registration.password, Passwordchar);
 
-		FILE* fp = fopen(file_name, "rb");
-		if (fp == NULL) {
-			fp = fopen(file_name, "wb");
+			FILE* fp = fopen(file_name, "rb");
 			if (fp == NULL) {
-				System::String^ temp_path_str = gcnew System::String(file_name);
-				System::Windows::Forms::MessageBox::Show(temp_path_str, "Помилка", System::Windows::Forms::MessageBoxButtons::OK, System::Windows::Forms::MessageBoxIcon::Error);
-			}
-			else {
-				fwrite(&registration, sizeof(Registration), 1, fp);
-				fclose(fp);
+				fp = fopen(file_name, "wb");
+				if (fp == NULL) {
+					System::String^ temp_path_str = gcnew System::String(file_name);
+					System::Windows::Forms::MessageBox::Show(temp_path_str, "Помилка", System::Windows::Forms::MessageBoxButtons::OK, System::Windows::Forms::MessageBoxIcon::Error);
+				}
+				else {
+					fwrite(&registration, sizeof(Registration), 1, fp);
+					fclose(fp);
 
+				}
 			}
+
+			this->Close();
 		}
-
-		this->Close();
 	}
 	};
 }

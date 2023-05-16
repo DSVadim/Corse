@@ -18,3 +18,10 @@ C:\Users\vadim\OneDrive\Рабочий стол\Курсова\11\1\x64\Debug\My
 C:\Users\vadim\OneDrive\Рабочий стол\Курсова\11\1\x64\Debug\My1.RegisterForm.resources
 C:\Users\vadim\OneDrive\Рабочий стол\Курсова\11\1\x64\Debug\My1.SystemForm.resources
 C:\Users\vadim\OneDrive\Рабочий стол\Курсова\11\1\x64\Debug\1.vcxproj.GenerateResource.cache
+C:\Users\vadim\OneDrive\Рабочий стол\Corse-main\1\x64\Debug\1.vcxproj.AssemblyReference.cache
+C:\Users\vadim\OneDrive\Рабочий стол\Corse-main\1\x64\Debug\1.vcxproj.SuggestedBindingRedirects.cache
+C:\Users\vadim\OneDrive\Рабочий стол\Corse-main\1\x64\Debug\My1.LoginForm.resources
+C:\Users\vadim\OneDrive\Рабочий стол\Corse-main\1\x64\Debug\My1.MainForm.resources
+C:\Users\vadim\OneDrive\Рабочий стол\Corse-main\1\x64\Debug\My1.RegisterForm.resources
+C:\Users\vadim\OneDrive\Рабочий стол\Corse-main\1\x64\Debug\My1.SystemForm.resources
+C:\Users\vadim\OneDrive\Рабочий стол\Corse-main\1\x64\Debug\1.vcxproj.GenerateResource.cache

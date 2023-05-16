@@ -3,6 +3,7 @@
 #include <string.h>
 #include <direct.h>
 #include <cstdio>
+#include <time.h>
 #include <cstring>
 #include <msclr/marshal_cppstd.h> 
 #include <msclr\marshal.h>
@@ -34,9 +35,9 @@ namespace My1 {
 	};
 	static struct Question_list
 	{
-		 Question question;
-		 Question_list* next;
-		 Question_list* prev;
+		Question question;
+		Question_list* next;
+		Question_list* prev;
 	};
 
 	static Question_list* head = NULL;
@@ -44,8 +45,8 @@ namespace My1 {
 	static Question_list* global_pointer;
 	static bool edit_mode = false;
 
-	
-	
+
+
 
 	/// <summary>
 	/// Summary for SystemForm1
@@ -109,7 +110,10 @@ namespace My1 {
 	private: System::Windows::Forms::RadioButton^ radioButton1;
 	private: System::Windows::Forms::TextBox^ textBox8;
 	private: System::Windows::Forms::Label^ lb1;
+	private: System::Windows::Forms::Button^ button1;
 
+		   System::String^ name;
+		   int who_Checked();
 
 	protected:
 
@@ -117,7 +121,7 @@ namespace My1 {
 		/// <summary>
 		/// Required designer variable.
 		/// </summary>
-		System::ComponentModel::Container ^components;
+		System::ComponentModel::Container^ components;
 
 #pragma region Windows Form Designer generated code
 		/// <summary>
@@ -151,6 +155,7 @@ namespace My1 {
 			this->lb1 = (gcnew System::Windows::Forms::Label());
 			this->btRight1 = (gcnew System::Windows::Forms::Button());
 			this->btLeft1 = (gcnew System::Windows::Forms::Button());
+			this->button1 = (gcnew System::Windows::Forms::Button());
 			this->btSave1 = (gcnew System::Windows::Forms::Button());
 			this->label5 = (gcnew System::Windows::Forms::Label());
 			this->label4 = (gcnew System::Windows::Forms::Label());
@@ -396,6 +401,7 @@ namespace My1 {
 			this->TP4->Controls->Add(this->lb1);
 			this->TP4->Controls->Add(this->btRight1);
 			this->TP4->Controls->Add(this->btLeft1);
+			this->TP4->Controls->Add(this->button1);
 			this->TP4->Controls->Add(this->btSave1);
 			this->TP4->Controls->Add(this->label5);
 			this->TP4->Controls->Add(this->label4);
@@ -440,6 +446,17 @@ namespace My1 {
 			this->btLeft1->Text = L"<";
 			this->btLeft1->UseVisualStyleBackColor = true;
 			// 
+			// button1
+			// 
+			this->button1->ForeColor = System::Drawing::Color::Black;
+			this->button1->Location = System::Drawing::Point(333, 213);
+			this->button1->Name = L"button1";
+			this->button1->Size = System::Drawing::Size(136, 35);
+			this->button1->TabIndex = 5;
+			this->button1->Text = L"Почати";
+			this->button1->UseVisualStyleBackColor = true;
+			this->button1->Click += gcnew System::EventHandler(this, &SystemForm::button1_Click);
+			// 
 			// btSave1
 			// 
 			this->btSave1->ForeColor = System::Drawing::Color::Black;
@@ -449,6 +466,7 @@ namespace My1 {
 			this->btSave1->TabIndex = 5;
 			this->btSave1->Text = L"Зберегти";
 			this->btSave1->UseVisualStyleBackColor = true;
+			this->btSave1->Click += gcnew System::EventHandler(this, &SystemForm::btSave1_Click);
 			// 
 			// label5
 			// 
@@ -573,18 +591,27 @@ namespace My1 {
 			textBox6->Text = marshal_as<String^>(p->question.v5);
 			textBox7->Text = p->question.answer.ToString();
 		}
+		void print1(Question_list* p)
+		{
+			textBox1->Text = marshal_as<String^>(p->question.question_text);
+			radioButton1->Text = marshal_as<String^>(p->question.v1);
+			radioButton2->Text = marshal_as<String^>(p->question.v2);
+			radioButton3->Text = marshal_as<String^>(p->question.v3);
+			radioButton4->Text = marshal_as<String^>(p->question.v4);
+			radioButton5->Text = marshal_as<String^>(p->question.v5);
+		}
 		char* GetUsername() {
-		char* temp_path = getenv("TEMP");
-		char* folder_path2 = "\\Vadim\\User info\\User.bin";
-		char file_name[255];
+			char* temp_path = getenv("TEMP");
+			char* folder_path2 = "\\Vadim\\User info\\User.bin";
+			char file_name[255];
 
-		sprintf(file_name, "%s%s", temp_path, folder_path2);
+			sprintf(file_name, "%s%s", temp_path, folder_path2);
 
-		char* login = (char*)malloc(64);
-		FILE* fp = fopen(file_name, "rb");
-		char line[256];
-		return login;
-		fclose(fp);
+			char* login = (char*)malloc(64);
+			FILE* fp = fopen(file_name, "rb");
+			char line[256];
+			return login;
+			fclose(fp);
 		}
 		void push_end(Question_list*& head, Question_list*& tail, char* question_text, char* v1,
 			char* v2, char* v3, char* v4, char* v5, int answer)
@@ -626,7 +653,31 @@ namespace My1 {
 			head = NULL;
 			tail = NULL;
 		}
-		
+
+		void get_rand(bool* mas)
+
+		{
+			srand(time(NULL));
+			bool a = true;
+			for (int i = 0; i < 50; i++) mas[i] = false;
+			while (a)
+			{
+				mas[rand() % 50] = true;
+
+				for (int i = 0, k = 0; i < 50; i++)
+				{
+					if (mas[i] == true) k++;
+					if (k == 20)
+					{
+						a = false;
+						break;
+					}
+				}
+			}
+		}
+
+		
+
 #pragma endregion
 		//char* System_to_char(System::String^ string, int max_length)
 		//{
@@ -643,55 +694,84 @@ namespace My1 {
 
 			//return charString;
 		//}
-		
+
 		char* System_to_char(String^ s)
 		{
 			using namespace Runtime::InteropServices;
 			const char* ptr = (const char*)(Marshal::StringToHGlobalAnsi(s)).ToPointer();
 			return (char*)ptr;
 		}
-
-private: System::Void btSave_Click(System::Object^ sender, System::EventArgs^ e) {
-	if ((textBox1->Text != "") && (textBox2->Text != "") && (textBox3->Text != "") &&
-		(textBox4->Text != "") && (textBox5->Text != "") && (textBox6->Text != "") && (textBox7 -> Text != ""))
-{ 
-		
-		Question Question1;
-		FILE* f;
-	
-		strcpy(Question1.question_text,System_to_char(textBox1->Text));
-		strcpy(Question1.v1, System_to_char(textBox2->Text));
-		strcpy(Question1.v2, System_to_char(textBox3->Text));
-		strcpy(Question1.v3, System_to_char(textBox4->Text));
-		strcpy(Question1.v4, System_to_char(textBox5->Text));
-		strcpy(Question1.v5, System_to_char(textBox6->Text));
-		Question1.answer = Convert::ToInt64(textBox7->Text);
-	if (edit_mode == true) 
-	{ 
-		strcpy(global_pointer->question.question_text,Question1.question_text);
-		strcpy(global_pointer->question.v1, Question1.v1);
-		strcpy(global_pointer->question.v2, Question1.v2);
-		strcpy(global_pointer->question.v3, Question1.v3);
-		strcpy(global_pointer->question.v4, Question1.v4);
-		strcpy(global_pointer->question.v5, Question1.v5);
-		global_pointer->question.answer = Question1.answer;
-		Question_list* temp = head;
-		f = fopen("Question_file.txt", "wb");
-		fclose(f);
-		f = fopen("Question_file.txt", "ab");
-			while (temp)
+		void changeVisibility(bool state)
+		{
+			for each (Control ^ c in this->Controls)
 			{
-				fwrite(&(*temp), sizeof(Question1), 1, f);
-				temp = temp->next;
+				if (c->Tag == "1")
+					c->Visible = state;
 			}
-		fclose(f);
+		}
+
+	private: System::Void btSave_Click(System::Object^ sender, System::EventArgs^ e) {
+		if ((textBox1->Text != "") && (textBox2->Text != "") && (textBox3->Text != "") &&
+			(textBox4->Text != "") && (textBox5->Text != "") && (textBox6->Text != "") && (textBox7->Text != ""))
+		{
+
+			Question Question1;
+			FILE* f;
+
+			strcpy(Question1.question_text, System_to_char(textBox1->Text));
+			strcpy(Question1.v1, System_to_char(textBox2->Text));
+			strcpy(Question1.v2, System_to_char(textBox3->Text));
+			strcpy(Question1.v3, System_to_char(textBox4->Text));
+			strcpy(Question1.v4, System_to_char(textBox5->Text));
+			strcpy(Question1.v5, System_to_char(textBox6->Text));
+			Question1.answer = Convert::ToInt64(textBox7->Text);
+			if (edit_mode == true)
+			{
+				strcpy(global_pointer->question.question_text, Question1.question_text);
+				strcpy(global_pointer->question.v1, Question1.v1);
+				strcpy(global_pointer->question.v2, Question1.v2);
+				strcpy(global_pointer->question.v3, Question1.v3);
+				strcpy(global_pointer->question.v4, Question1.v4);
+				strcpy(global_pointer->question.v5, Question1.v5);
+				global_pointer->question.answer = Question1.answer;
+				Question_list* temp = head;
+				f = fopen("Question_file.txt", "wb");
+				fclose(f);
+				f = fopen("Question_file.txt", "ab");
+				while (temp)
+				{
+					fwrite(&(*temp), sizeof(Question1), 1, f);
+					temp = temp->next;
+				}
+				fclose(f);
+			}
+			else
+			{
+				f = fopen("Question_file.txt", "ab");
+				fwrite(&Question1, sizeof(Question1), 1, f);
+				fclose(f);
+
+				textBox1->Clear();
+				textBox2->Clear();
+				textBox3->Clear();
+				textBox4->Clear();
+				textBox5->Clear();
+				textBox6->Clear();
+				textBox7->Clear();
+			}
+		}
+		else MessageBox::Show("Заповніть всі поля", "Помилка");
+		btSave->Enabled = true;
 	}
-	else
-	{
-		f = fopen("Question_file.txt", "ab");
-		fwrite(&Question1, sizeof(Question1), 1, f);
-		fclose(f);
-		
+
+		   
+
+	private: System::Void btVnesok_Click(System::Object^ sender, System::EventArgs^ e) {
+		btSave->Enabled = true;
+		edit_mode = false;
+		changeVisibility(true);
+		btLeft->Visible = false;
+		btRight->Visible = false;
 		textBox1->Clear();
 		textBox2->Clear();
 		textBox3->Clear();
@@ -700,100 +780,172 @@ private: System::Void btSave_Click(System::Object^ sender, System::EventArgs^ e)
 		textBox6->Clear();
 		textBox7->Clear();
 	}
-}
-else MessageBox::Show("Заповніть всі поля", "Помилка");
-btSave->Enabled = true; 
-}
-
-	   void changeVisibility(bool state)
-	   {
-		   for each (Control ^ c in this->Controls)
-		   {
-			   if (c->Tag == "1")
-				   c->Visible = state;
-		   }
-	   }
-
-private: System::Void btVnesok_Click(System::Object^ sender, System::EventArgs^ e) {
-	btSave->Enabled = true; 
-	edit_mode = false;
-	changeVisibility(true); 
-	btLeft->Visible = false;
-	btRight->Visible = false;
-	textBox1->Clear();
-	textBox2->Clear();
-	textBox3->Clear();
-	textBox4->Clear();
-	textBox5->Clear();
-	textBox6->Clear();
-	textBox7->Clear();
-}
-private: System::Void btLeft_Click(System::Object^ sender, System::EventArgs^ e) {
-	btRight->Enabled = true;
+	private: System::Void btLeft_Click(System::Object^ sender, System::EventArgs^ e) {
+		btRight->Enabled = true;
 		if (global_pointer->prev != NULL)
 		{
-			global_pointer = global_pointer->prev; 
+			global_pointer = global_pointer->prev;
 			print(global_pointer);
 			if (global_pointer->prev == NULL) btLeft->Enabled = false;
 		}
-}
-
-
-private: System::Void btRight_Click(System::Object^ sender, System::EventArgs^ e) {
-	btLeft->Enabled = true;
-	if (global_pointer->next != NULL)
-	{
-		global_pointer = global_pointer->next;
-		print(global_pointer);
-		if (global_pointer->next == NULL) btRight->Enabled = false;
 	}
-}
-private: System::Void SystemForm_Load_1(System::Object^ sender, System::EventArgs^ e) {
-	char* login = GetUsername();
-	this->lb1->Text = gcnew String(login);
-	changeVisibility(false);
 
-	String^ user = gcnew String(GetUsername());
 
-	if (user != "Admin.bin") {
-		TP3->Visible = false;
-		TP4->Visible = true;
-
+	private: System::Void btRight_Click(System::Object^ sender, System::EventArgs^ e) {
+		btLeft->Enabled = true;
+		if (global_pointer->next != NULL)
+		{
+			global_pointer = global_pointer->next;
+			print(global_pointer);
+			if (global_pointer->next == NULL) btRight->Enabled = false;
+		}
 	}
-	else {
-		TP3->Visible = true;
-		TP4->Visible = false;
-	}
-}
+	private: System::Void SystemForm_Load_1(System::Object^ sender, System::EventArgs^ e) {
+		label4->Visible = false;
+		label5->Visible = false;
+		textBox8->Visible = false;
+		radioButton1->Visible = false;
+		radioButton2->Visible = false;
+		radioButton3->Visible = false;
+		radioButton4->Visible = false;
+		radioButton5->Visible = false;
+		btSave1->Visible = false;
+		btLeft1->Visible = false;
+		btRight1->Visible = false;
 
-private: System::Void btReg_Click(System::Object^ sender, System::EventArgs^ e) {
-	btSave->Enabled = true; 
-	btLeft->Enabled = false; 
-	btLeft->Visible = true;
-	btRight->Visible = true;
-	btRight->Enabled = true;
-	edit_mode = true;
-	if (head != NULL) Delete(head, tail); 
+		Question_list* head = NULL;
+		Question_list* tail = NULL;
+		bool mas[50];
+		get_rand(mas);
+		btLeft1->Enabled = false;
+		btSave1->Enabled = false;
 		Question Question1;
-	FILE* f2;
-	if ((f2 = fopen("Question_file.txt", "rb")) == NULL) 
-	{
-		MessageBox::Show("Питання відсутні", "Помилка");
-		return;
-	};
-	fread(&Question1, sizeof(Question1), 1, f2); 
+		FILE* f1;
+		if ((f1 = fopen("Question_file.txt", "rb")) == NULL) {
+
+			MessageBox::Show("Питання відсутні", "Помилка");
+			return;
+		};
+		fread(&Question1, sizeof(Question1), 1, f1);
+		int i = 0;
+		while (!feof(f1))
+		{
+			if (mas[i] == true) push_end(head, tail, Question1.question_text,
+				Question1.v1, Question1.v2, Question1.v3, Question1.v4, Question1.v5, Question1.answer);
+			i++;
+			fread(&Question1, sizeof(Question1), 1, f1);
+		}
+		fclose(f1);
+		global_pointer = head;
+		print(global_pointer);
+
+		char* login = GetUsername();
+		this->lb1->Text = gcnew String(login);
+		changeVisibility(false);
+
+		String^ user = gcnew String(GetUsername());
+
+		if (user != "Admin.bin") {
+			TP3->Visible = false;
+			TP4->Visible = true;
+
+		}
+		else {
+			TP3->Visible = true;
+			TP4->Visible = false;
+		}
+	}
+
+	private: System::Void btReg_Click(System::Object^ sender, System::EventArgs^ e) {
+		btSave->Enabled = true;
+		btLeft->Enabled = false;
+		btLeft->Visible = true;
+		btRight->Visible = true;
+		btRight->Enabled = true;
+		edit_mode = true;
+		if (head != NULL) Delete(head, tail);
+		Question Question1;
+		FILE* f2;
+		if ((f2 = fopen("Question_file.txt", "rb")) == NULL)
+		{
+			MessageBox::Show("Питання відсутні", "Помилка");
+			return;
+		};
+		fread(&Question1, sizeof(Question1), 1, f2);
 		while (!feof(f2))
 		{
 			push_end(head, tail, Question1.question_text, Question1.v1, Question1.v2,
 				Question1.v3, Question1.v4, Question1.v5, Question1.answer);
 			fread(&Question1, sizeof(Question1), 1, f2);
 		}
-	fclose(f2);
-	global_pointer = head; 
-	print(global_pointer);
-	changeVisibility(true); 
-}
-};
-}
+		fclose(f2);
+		global_pointer = head;
+		print(global_pointer);
+		changeVisibility(true);
+	}
+	private: System::Void button1_Click(System::Object^ sender, System::EventArgs^ e) {
+		button1->Visible = false;
+		label4->Visible = true;
+		label5->Visible = true;
+		textBox8->Visible = true;
+		radioButton1->Visible = true;
+		radioButton2->Visible = true;
+		radioButton3->Visible = true;
+		radioButton4->Visible = true;
+		radioButton5->Visible = true;
+		btSave1->Visible = true;
+		btLeft1->Visible = true;
+		btRight1->Visible = true;
+	}
 
+	private: System::Void btSave1_Click(System::Object^ sender, System::EventArgs^ e) {
+		static float mark = 0;
+		static int questions_counter = 0;
+		questions_counter++;
+		if (who_Checked() == global_pointer->question.answer) {
+			mark += 0.25;
+
+			Question_list* temp = global_pointer;
+
+			if (global_pointer->next != NULL) {
+				if (global_pointer->prev != NULL)
+					btLeft1->Enabled = true;
+
+				global_pointer = global_pointer->next;
+				print(global_pointer);
+
+				if (global_pointer->next == NULL)
+					btRight1->Enabled = false;
+			}
+			else {
+				if (global_pointer->prev != NULL) {
+					btRight1->Enabled = false;
+					global_pointer = global_pointer->prev;
+					print(global_pointer);
+
+					if (global_pointer->prev == NULL)
+						btLeft1->Enabled = false;
+				}
+			}
+
+			if (temp->next != NULL)
+				temp->next->prev = temp->prev;
+			if (temp->prev != NULL)
+				temp->prev->next = temp->next;
+
+			free(temp);
+
+			if (questions_counter == 20) {
+				FILE* f2;
+				f2 = fopen("rez_file.txt", "a");
+				fprintf(f2, "%s - %.2f\n", name, mark);
+				fclose(f2);
+				this->Close();
+			}
+
+			btSave1->Enabled = false;
+		}
+	}
+	};
+}
 
