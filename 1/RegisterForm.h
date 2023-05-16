@@ -131,7 +131,7 @@ namespace  My1 {
 			this->configpassword->Name = L"configpassword";
 			this->configpassword->Size = System::Drawing::Size(240, 25);
 			this->configpassword->TabIndex = 2;
-			this->configpassword->Text = L"Підтвердження пароль";
+			this->configpassword->Text = L"Підтвердження пароля";
 			// 
 			// tbLogin
 			// 
@@ -217,6 +217,10 @@ namespace  My1 {
 		RegBoxLogin = System::Convert::ToString(tbLogin->Text);
 		RegBoxPassword = System::Convert::ToString(tbPassword->Text);
 		RegBoxConfigPassword = System::Convert::ToString(tbConfigPassword->Text);
+		if (RegBoxPassword != RegBoxConfigPassword) {
+			System::Windows::Forms::MessageBox::Show("Не правильний пароль.", "ERROR", System::Windows::Forms::MessageBoxButtons::OK, System::Windows::Forms::MessageBoxIcon::Error);
+		}
+		else {
 		char* temp_path = getenv("TEMP");
 		char* folder_path = "\\Vadim\\Database";
 		char file_name[255];
